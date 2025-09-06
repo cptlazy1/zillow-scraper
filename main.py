@@ -4,7 +4,6 @@ from selenium import webdriver
 import re
 from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
@@ -85,4 +84,6 @@ for i in range(len(link_list)):
 
     except TimeoutException:
         print("Timeout")
+
 zillow_driver.quit()
+g_forms_driver.quit()
