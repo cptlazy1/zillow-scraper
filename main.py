@@ -1,3 +1,4 @@
+from time import sleep
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import re
@@ -39,46 +40,49 @@ for address in address_list:
     clean_address_list.append(address.text.strip())
 
 # Use Selenium to fill out the Google Form
-try:
-    address_field = WebDriverWait(g_forms_driver, 3).until(
-        ec.presence_of_element_located(
-            (By.CSS_SELECTOR, 'input[aria-labelledby="i1 i4"]')
+for i in range(len(link_list)):
+    sleep(3)
+    try:
+        address_field = WebDriverWait(g_forms_driver, 3).until(
+            ec.presence_of_element_located(
+                (By.CSS_SELECTOR, 'input[aria-labelledby="i1 i4"]')
+            )
         )
-    )
 
-    address_field.clear()
-    address_field.send_keys(clean_address_list[0])
-    rent_field = WebDriverWait(g_forms_driver, 3).until(
-        ec.presence_of_element_located(
-            (By.CSS_SELECTOR, 'input[aria-labelledby="i6 i9"]')
-        )
-    )
-    rent_field.clear()
-    rent_field.send_keys(clean_rent_list[0])
-    link_field = WebDriverWait(g_forms_driver, 3).until(
-        ec.presence_of_element_located(
-            (By.CSS_SELECTOR, 'input[aria-labelledby="i11 i14"]')
-        )
-    )
-    link_field.clear()
-    link_field.send_keys(link_list[0])
-    submit_button = WebDriverWait(g_forms_driver, 3).until(
-        ec.presence_of_element_located(
-            (By.XPATH, "//span[normalize-space()='Verzenden']")
-        )
-    )
-    submit_button.click()
-    submit_another_response_link = WebDriverWait(g_forms_driver, 3).until(
-        ec.presence_of_element_located(
-            (By.LINK_TEXT, "Nog een antwoord verzenden")
-        )
-    )
-    submit_another_response_link.click()
+        address_field.clear()
+        address_field.send_keys(clean_address_list[i])
 
-#       TODO 1: click the "Submit another response" link
-#       TODO 2: Loop through all the entries
-#       TODO 3: Don't forget to commit often
+        rent_field = WebDriverWait(g_forms_driver, 5).until(
+            ec.presence_of_element_located(
+                (By.CSS_SELECTOR, 'input[aria-labelledby="i6 i9"]')
+            )
+        )
+        rent_field.clear()
+        rent_field.send_keys(clean_rent_list[i])
 
-except TimeoutException:
-    print("Timeout")
+        link_field = WebDriverWait(g_forms_driver, 4).until(
+            ec.presence_of_element_located(
+                (By.CSS_SELECTOR, 'input[aria-labelledby="i11 i14"]')
+            )
+        )
+        link_field.clear()
+        link_field.send_keys(link_list[i])
+
+        submit_button = WebDriverWait(g_forms_driver, 3).until(
+            ec.presence_of_element_located(
+                (By.XPATH, "//span[normalize-space()='Verzenden']")
+            )
+        )
+        submit_button.click()
+
+        submit_another_response_link = WebDriverWait(g_forms_driver, 6).until(
+            ec.presence_of_element_located(
+                (By.LINK_TEXT, "Nog een antwoord verzenden")
+            )
+        )
+        submit_another_response_link.click()
+
+
+    except TimeoutException:
+        print("Timeout")
 zillow_driver.quit()
