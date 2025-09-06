@@ -28,9 +28,9 @@ link_list = [link['href'] for link in soup.select('a.property-card-link')]
 rent_list = soup.find_all("span", attrs={"data-test": "property-card-price"})
 clean_rent_list = []
 for rent in rent_list:
-   parts = re.split(r"[+/]", rent.text)
-   price = parts[0].strip()
-   clean_rent_list.append(price)
+    parts = re.split(r"[+/]", rent.text)
+    price = parts[0].strip()
+    clean_rent_list.append(price)
 
 # Get all the addresses and put them in a list
 address_list = soup.find_all("address", attrs={"data-test": "property-card-addr"})
@@ -68,13 +68,17 @@ try:
         )
     )
     submit_button.click()
+    submit_another_response_link = WebDriverWait(g_forms_driver, 3).until(
+        ec.presence_of_element_located(
+            (By.LINK_TEXT, "Nog een antwoord verzenden")
+        )
+    )
+    submit_another_response_link.click()
 
 #       TODO 1: click the "Submit another response" link
 #       TODO 2: Loop through all the entries
-
-
+#       TODO 3: Don't forget to commit often
 
 except TimeoutException:
     print("Timeout")
 zillow_driver.quit()
-
